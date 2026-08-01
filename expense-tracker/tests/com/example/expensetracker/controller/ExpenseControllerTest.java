@@ -39,8 +39,8 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("POST /expenses - Success")
     void testAddExpense_success() throws Exception {
-        Expense input = new Expense(null, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
-        Expense output = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense input = new Expense(null, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
+        Expense output = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
 
         when(expenseService.addExpense(any(Expense.class))).thenReturn(output);
 
@@ -52,13 +52,13 @@ class ExpenseControllerTest {
                 .andExpect(jsonPath("$.title", is("Pizza")))
                 .andExpect(jsonPath("$.amount", is(300.00)))
                 .andExpect(jsonPath("$.category", is("Food")))
-                .andExpect(jsonPath("$.date", is("2026-08-02")));
+                .andExpect(jsonPath("$.date", is("2025-08-02")));
     }
 
     @Test
     @DisplayName("POST /expenses - Validation Failure - Empty Title")
     void testAddExpense_validationFailure_emptyTitle() throws Exception {
-        Expense invalid = new Expense(null, "", new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, "", new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +74,7 @@ class ExpenseControllerTest {
     @DisplayName("POST /expenses - Validation Failure - Title Too Long")
     void testAddExpense_validationFailure_titleTooLong() throws Exception {
         String longTitle = "a".repeat(101);
-        Expense invalid = new Expense(null, longTitle, new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, longTitle, new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("POST /expenses - Validation Failure - Negative Amount")
     void testAddExpense_validationFailure_negativeAmount() throws Exception {
-        Expense invalid = new Expense(null, "Pizza", new BigDecimal("-5.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, "Pizza", new BigDecimal("-5.00"), "Food", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -100,7 +100,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("POST /expenses - Validation Failure - Zero Amount")
     void testAddExpense_validationFailure_zeroAmount() throws Exception {
-        Expense invalid = new Expense(null, "Pizza", BigDecimal.ZERO, "Food", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, "Pizza", BigDecimal.ZERO, "Food", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +113,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("POST /expenses - Validation Failure - Null Amount")
     void testAddExpense_validationFailure_nullAmount() throws Exception {
-        Expense invalid = new Expense(null, "Pizza", null, "Food", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, "Pizza", null, "Food", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -126,7 +126,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("POST /expenses - Validation Failure - Empty Category")
     void testAddExpense_validationFailure_emptyCategory() throws Exception {
-        Expense invalid = new Expense(null, "Pizza", new BigDecimal("300.00"), "", LocalDate.of(2026, 8, 2));
+        Expense invalid = new Expense(null, "Pizza", new BigDecimal("300.00"), "", LocalDate.of(2025, 8, 2));
 
         mockMvc.perform(post("/expenses")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +166,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("GET /expenses - Success")
     void testGetAllExpenses() throws Exception {
-        Expense exp = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense exp = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
         when(expenseService.getAllExpenses()).thenReturn(List.of(exp));
 
         mockMvc.perform(get("/expenses"))
@@ -178,7 +178,7 @@ class ExpenseControllerTest {
     @Test
     @DisplayName("GET /expenses/category/{category} - Success")
     void testGetExpensesByCategory() throws Exception {
-        Expense exp = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2026, 8, 2));
+        Expense exp = new Expense(1L, "Pizza", new BigDecimal("300.00"), "Food", LocalDate.of(2025, 8, 2));
         when(expenseService.getExpensesByCategory("Food")).thenReturn(List.of(exp));
 
         mockMvc.perform(get("/expenses/category/Food"))

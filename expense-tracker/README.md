@@ -56,11 +56,12 @@ expense-tracker/
 ---
 
 ## Installation & Prerequisites
-- **JDK 17** or higher installed. Verify using:
+- **JDK 17** installed. Verify using:
   ```bash
   java -version
   ```
-- **Apache Maven** installed. Alternatively, you can use the bundled Maven runner inside modern IDEs (like IntelliJ).
+- **Apache Maven 3.9+** installed. Alternatively, you can use the bundled Maven runner inside modern IDEs (like IntelliJ).
+- This project was validated on a clean checkout using **Java 17.0.19** and **Maven 3.9.13**.
 
 ---
 
@@ -73,7 +74,7 @@ mvn clean install
 ```
 
 ### 2. Run All Unit & Integration Tests
-Runs the 22 JUnit 5 tests situated in the root `tests/` folder:
+Runs the JUnit 5 test suite under the `tests/` folder, including the end-to-end workflow test:
 ```bash
 mvn test
 ```
