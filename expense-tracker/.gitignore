@@ -1,0 +1,33 @@
+# Maven build output
+target/
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbproject/jdk.xml
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

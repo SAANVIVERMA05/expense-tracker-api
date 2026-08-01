@@ -2,6 +2,7 @@ package com.example.expensetracker.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class Expense {
     private String category;
 
     @NotNull(message = "Date is required")
+    @PastOrPresent(message = "Date cannot be in the future")
     private LocalDate date;
 
     // Constructors

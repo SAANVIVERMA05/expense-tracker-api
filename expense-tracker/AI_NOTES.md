@@ -1,35 +1,37 @@
-# AI Notes - Smart Expense Tracker API
+# AI Notes - Smart Expense Tracker API Review & Improvements
 
-This file outlines the generation details, manual adjustments, and design trade-offs made during the implementation of the Smart Expense Tracker API.
+This file documents the AI-assisted generation details, manual code reviews, refinement changes, and rejected alternatives for the Smart Expense Tracker API.
 
 ---
 
 ## What AI Generated
-The entire project scaffold, source code, and tests were systematically generated step-by-step:
-1. **Build Configuration**: `pom.xml` with dependencies for Spring Boot 3 Web, Jakarta Validation, Springdoc OpenAPI, and Spring Boot Starter Test. Custom redirection of the test directory to the root `tests/` directory.
-2. **Entity Design**: `Expense.java` with validation rules using Jakarta Constraints (`@NotBlank`, `@NotNull`, `@Positive`, `@Size`).
-3. **Business Logic Layer**: `ExpenseService.java` implementing thread-safe calculations (`CopyOnWriteArrayList` and `AtomicLong` for primary key generation).
-4. **API Endpoint Layer**: `ExpenseController.java` maps the specific paths and formats requested by the user, utilizing Spring Web controllers.
-5. **Robust Error Handling**:
-   - `ExpenseNotFoundException` for explicit element check errors.
-   - `ErrorResponse` formatting standardized JSON errors with dates and field-level message details.
-   - `GlobalExceptionHandler` returning proper HTTP status codes (`400 Bad Request`, `404 Not Found`, `500 Internal Server Error`).
-6. **Tests**: JUnit 5 tests inside the custom `tests/` folder covering `ExpenseService` and mock-mvc controller endpoints.
-7. **Documentation**: `README.md` and this `AI_NOTES.md`.
+1. **Maven Project Scaffold**: Configured the initial `pom.xml` with dependencies for Spring Boot 3, Jakarta Bean Validation, Springdoc OpenAPI UI, and Spring Boot Starter Test, pointing test sources to the root `tests/` folder.
+2. **Layered Core Architecture**:
+   - **Model**: `Expense.java` with validation constraints.
+   - **Service**: `ExpenseService.java` providing in-memory operations and calculations.
+   - **Controller**: `ExpenseController.java` implementing endpoints and mapping outputs.
+3. **Robust Error Handling**:
+   - `ExpenseNotFoundException` representing retrieval missing-checks.
+   - `ErrorResponse` mapping standardized error structure containing timestamps, HTTP statuses, category info, and detailed messages.
+   - `GlobalExceptionHandler` intercepting conversion errors and validation constraints.
+4. **Interactive OpenAPI Metadata**: Added annotations on `ExpenseController.java` to format Swagger UI descriptors.
+5. **JUnit 5 Test Coverage**: Formulated tests verifying calculations, deletions, correct categories, negative/zero/null amounts, and future date constraints.
 
 ---
 
 ## What Was Manually Reviewed or Modified
-During execution, the following was analyzed and verified:
-1. **Java Platform and Maven**: Checked java version (`java 20`) and maven path. Since `mvn` was not in user's global PATH environment variable, we successfully located IntelliJ's bundled maven script at `C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.2.2\plugins\maven\lib\maven3\bin\mvn.cmd` and leveraged it to verify builds and test runs.
-2. **Spring Boot Compilation Check**: Ran clean compile command after structural code generation to guarantee proper package mapping and syntax correction before writing test files.
-3. **Response Wrappers**: Verified the `Map.of()` dynamic JSON models correctly serialized numeric fields (like totals) as numbers rather than strings.
+During the review and improvement cycle, the following manual investigations and adjustments were performed:
+1. **Local environment checks**: Verified Java 20 environment variables. Configured and tested Maven scripts via the bundled IntelliJ executable:
+   `C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.2.2\plugins\maven\lib\maven3\bin\mvn.cmd`
+2. **Added Missing Validation**: Included the `@PastOrPresent` validation rule to the `date` field in `Expense.java` to satisfy future-date constraints check.
+3. **Refined Error Mapping**: Cleaned up log representations and comments inside `GlobalExceptionHandler.java`, ensuring consistency with clean code guidelines.
+4. **Enhanced Test Assertions**: Expanded `ExpenseControllerTest.java` with detailed assertions verifying validation failure categories (such as future date, null dates, null amounts, zero amounts, and empty categories).
 
 ---
 
 ## What Suggestions Were Rejected and Why
-1. **Using Default Test Source Folder (`src/test/java`)**:
-   - **Reason for Rejection**: The assignment specified the project structure must be exactly:
+1. **Placing Unit Tests under `src/test/java`**:
+   - **Reason for Rejection**: The assignment requirement explicitly specified unit tests must reside in the root `tests/` folder:
      ```
      expense-tracker/
      ├── README.md
@@ -37,13 +39,10 @@ During execution, the following was analyzed and verified:
      ├── src/
      └── tests/
      ```
-   - **Alternative Implemented**: Modified the Maven build configuration in `pom.xml` by defining `<testSourceDirectory>tests</testSourceDirectory>` to correctly recognize tests in the custom directory.
-2. **Using JPA or H2 Database**:
-   - **Reason for Rejection**: The assignment stated: "Do NOT use any database. Store data in memory using a List."
-   - **Alternative Implemented**: Used `CopyOnWriteArrayList` to ensure thread safety without database integration overhead.
-3. **Returning Standard Spring Boot Error Fields**:
-   - **Reason for Rejection**: Standard Spring Boot JSON error response structures include fields like `path` and `trace` that can expose backend internal details and might not match custom front-end expectations.
-   - **Alternative Implemented**: Crafted a clean, bespoke `ErrorResponse` class containing only `timestamp`, `status`, `error`, `message`, and validation error details (`details`).
-4. **String Amount Parsing**:
-   - **Reason for Rejection**: The amount could have been kept as a simple floating-point `Double`.
-   - **Alternative Implemented**: Utilized `BigDecimal` for currency representation to prevent float-point rounding errors, adhering to production-grade software standards.
+   - **Action Taken**: Configured `<testSourceDirectory>tests</testSourceDirectory>` in Maven to bind this root directory for compile and execution phases.
+2. **Utilizing an In-Memory Database (e.g. H2)**:
+   - **Reason for Rejection**: The requirement states: "Do NOT use any database. Store data in memory using a List."
+   - **Action Taken**: Implemented `CopyOnWriteArrayList` to ensure thread-safe operations in multi-threaded runtime environments without any DB dependencies.
+3. **Adding Complex DTO Translation**:
+   - **Reason for Rejection**: Creating DTO layers is optional and adds duplicate code mappings for a simple in-memory list application.
+   - **Action Taken**: Used the core `Expense` class directly with validation annotations at the controller entrance, preserving simplicity and preventing boilerplates.
