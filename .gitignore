@@ -1,1 +1,2 @@
-/expense-tracker/target/
+expense-tracker/target/**/*.lst
+expense-tracker/target/**/*.txt

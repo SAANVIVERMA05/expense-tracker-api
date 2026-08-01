@@ -1,5 +1,6 @@
 # Maven build output
-target/
+target/**/*.lst
+target/**/*.txt
 *.war
 *.ear
 *.zip
