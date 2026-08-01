@@ -1,2 +1,1 @@
-com\example\expensetracker\controller\ExpenseControllerTest.class
-com\example\expensetracker\service\ExpenseServiceTest.class
+com/example/expensetracker/ExpenseWorkflowIntegrationTest.class
